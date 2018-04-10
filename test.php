@@ -1,3 +1,9 @@
+<?php
+require_once 'functions.php';
+if (!isAuthorizedUserOrGuest()){
+  redirect403('index.php');
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -55,7 +61,7 @@
 			
 			$all_results = count($results);
 			$valid = count(array_filter($results));
-			$name = getAuthorizedUser()['username'];
+			$name = userOrGuestName();
 			print_r($name);
 			echo "<p>Всего вопросов: ", $all_results, "</p>";
 			echo "<p>Правильных ответов: ", $valid, "</p>";

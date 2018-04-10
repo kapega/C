@@ -1,10 +1,7 @@
 <?php
 require_once 'functions.php';
-if (empty($_SESSION['userName'])) {
-  header($_SERVER['SERVER_PROTOCOL'] . ' 403 Forbidden');
-  header("Refresh: 2; url='index.php'");
-  echo 'Авторизуйтесь!'; 
-  exit;
+if (!isAuthorizedUserOrGuest()) {
+  redirect403('index.php');
 }
 ?>
 <!DOCTYPE html>

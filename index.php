@@ -4,13 +4,11 @@ require_once 'functions.php';
 if (isPost()) {
   if ($_POST['user'] === 'admin') {
   	if ( login( getPostParam('login'), getPostParam('password') ) ) {
-  		$_SESSION['userName'] = getAuthorizedUser()['username'];
-  		$_SESSION['admin'] = true;
-  		redirect('admin');
+  		redirect('admin.php');
   	}
   } else {
-  	$_SESSION['userName'] = $_POST['guest'];
-  	redirect('list');
+  	login_guest($_POST['guest']);
+  	redirect('list.php');
   }
 }
 ?>
@@ -27,19 +25,28 @@ if (isPost()) {
 	</style>
 </head>
 <body>
-	<form method="POST">
+	<form method="POST" action="<?= $_SERVER['REQUEST_URI'] ?>">
 		<ul>
-			<li><label><input type="radio" name="user" value="admin">
-				Авторизоваться как админ
-				  <ul>
-			<li><input placeholder="Логин" name="login" type="text"></li>
-			<li><input placeholder="Пароль" name="password" type="password"></li>
-		</ul></label></li>
-			<li><label><input type="radio" name="user" value="guest">
-				Войти как гость
-				  <ul>
-			<li><input  placeholder="Имя" name="guest" type="text"></li>
-		</ul></label></li></ul>
+			<li>
+				<label for="auth_admin">
+					<input type="radio" name="user" value="admin" id="auth_admin">
+					Авторизоваться как админ
+				</label>
+				<ul>
+					<li><input placeholder="Логин" name="login" type="text"></li>
+					<li><input placeholder="Пароль" name="password" type="password"></li>
+				</ul>
+			</li>
+			<li>
+				<label for="auth_guest">
+					<input type="radio" name="user" value="guest" id="auth_guest" checked>
+					Войти как гость
+				</label>
+				<ul>
+					<li><input  placeholder="Имя" name="guest" type="text"></li>
+				</ul>
+			</li>
+		</ul>
 		<input type="submit" value="Войти">
 	</form>
 </body>

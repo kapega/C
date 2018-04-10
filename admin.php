@@ -1,3 +1,9 @@
+<?php
+require_once 'functions.php';
+if (!isAuthorizedUser()){
+  redirect403('index.php');
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,13 +17,7 @@
     <input type="submit" value="Отправить тест"><br><br>
 
 	<?php
-		function redirect($to) {
-			// header('HTTP/1.0 302 Moved Permanently');
-			header("Location: $to");
-			die();
-		}
-		
-		if (count($_FILES) > 0) {
+		if (count($_FILES) > 0 && !empty($_FILES['mytest']['name'])) {
 			try {
 				// читаем загруженный файл (из временной папки)
 				$user_file = file_get_contents($_FILES['mytest']['name']);
@@ -25,7 +25,7 @@
 				//print_r($_FILES['mytest']['name']); проверить название файла
 				//echo "</pre>";
 				$json_test = json_decode($user_file); // из файла json получаем структуры php
-				if (is_null($json_test) && !empty($user_file))
+				if (empty($json_test) && !empty($user_file))
 					throw new Exception('файл был получен, но это не json');
 				// читаем файл из своего хранилища загруженных тестов
 				$tests_file = file_get_contents('tests.json');						
